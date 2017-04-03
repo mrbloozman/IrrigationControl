@@ -1,0 +1,88 @@
+extends main.jade
+
+block content
+	div.panel.panel-primary
+		div.panel-heading
+			h1.panel-title Schedules
+		div.panel-body
+			if event
+				if event.severity == 'INFO'
+					p.bg-info #{event.message}
+				if event.severity == 'WARN'
+					p.bg-warning #{event.message}
+				if event.severity == 'ERROR'
+					p.bg-danger #{event.message}
+			div.btn-group
+				button.btn.btn-default#add(type='button')
+					span.glyphicon.glyphicon-plus-sign
+				button.btn.btn-default#edit(type='button')
+					span.glyphicon.glyphicon-pencil
+			table#sch_table.table
+				tr
+					th
+					th ID
+					th Zone
+					th Day
+					th Start Time
+					th Duration (Minutes)
+					th One Shot
+				each sch in schedules
+					tr
+						td
+							button.btn.btn-default.hidden.delete_button(sch_id='#{sch.id}')
+								span.glyphicon.glyphicon-remove-sign
+						td #{sch.id}
+						td #{sch.zone_label}
+						td #{sch.day_label}
+						td #{sch.start_time}
+						td #{sch.duration_minutes}
+						td #{sch.one_shot}
+			form#add_form.hidden(action='putSchedule', method='post')
+				div.form-group
+					h4 Zone
+					select.form-control(name='zoneId')
+						each zone in zones
+							option(value='#{zone.id}') #{zone.zone_label}
+					h4 Day
+					select.form-control(name='day')
+						option(value='0') Monday
+						option(value='1') Tuesday
+						option(value='2') Wednesday
+						option(value='3') Thursday
+						option(value='4') Friday
+						option(value='5') Saturday
+						option(value='6') Sunday
+					div.form-control
+						label(for='duration_minutes') Duration in Minutes
+						input#duration_minutes(type='number',name='duration_minutes')
+					div.form-control
+						label(for='start_time') Start Time
+						input#start_time(type='time',name='start_time')
+					h4 One Shot
+					select.form-control(name='one_shot')
+						option(value='1') One Shot
+						option(value='0') Recurring
+					button.btn.btn-default(type='submit') Submit
+		div.panel-footer
+			p #{schedules}
+block scripts	
+	script(type='text/javascript').
+		$(document).ready(function(){
+			$('#edit').click(function(){
+				$('.delete_button').toggleClass('hidden');
+			});
+			$('.delete_button').click(function(){
+				var sch_id = $(this).attr('sch_id');
+				var input = $("<input>").attr("name", "id").val(sch_id);
+				$(input).addClass('hidden');
+				$(this).parents('div.panel-primary').after('<form id="delete_form"></form>');
+				$('#delete_form').append(input)
+					.attr('action','/deleteSchedule')
+					.attr('method','post')
+					.submit();
+			});
+			$('#add').click(function(){
+				$('#add_form').toggleClass('hidden');
+				$('#sch_table').toggleClass('hidden');
+			});
+		});

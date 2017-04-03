@@ -1,0 +1,16 @@
+extends main.jade
+
+block content
+	div.panel.panel-primary
+		div.panel-heading
+			h1.panel-title Weather
+		div.panel-body
+			each w in weatherData
+				p #{weatherData[w]}
+	div.panel.panel-primary
+		div.panel-heading
+			h1.panel-title Launch Parameters
+		div.panel-body
+			each param in lp
+				h2 #{param}
+				p #{lp[param]}

@@ -1,0 +1,104 @@
+extends main.jade
+
+block content
+	div.panel.panel-primary
+		div.panel-heading
+			h1.panel-title Zones
+		div.panel-body
+			if event
+				if event.severity == 'INFO'
+					p.bg-info #{event.message}
+				if event.severity == 'WARN'
+					p.bg-warning #{event.message}
+				if event.severity == 'ERROR'
+					p.bg-danger #{event.message}
+			div.btn-group
+				button.btn.btn-default#add(type='button')
+					span.glyphicon.glyphicon-plus-sign
+				button.btn.btn-default#edit(type='button')
+					span.glyphicon.glyphicon-pencil
+			table.table
+				tr
+					th
+					th ID
+					th Label
+					th Status
+					th Next Run Time
+					th Disable/Enable
+				each zone in zones
+					tr
+						td
+							button.btn.btn-default.hidden.delete_button(zone_id='#{zone.id}')
+								span.glyphicon.glyphicon-remove-sign
+						td #{zone.id}
+						td #{zone.zone_label}
+						td #{zone.status_label}
+						td #{zone.nextRunTimeFormatted}
+						td
+							if zone.enabled==0
+								button.btn.btn-default.play_button(zone_id='#{zone.id}')
+									span.glyphicon.glyphicon-play
+							else
+								button.btn.btn-default.pause_button(zone_id='#{zone.id}')
+									span.glyphicon.glyphicon-pause
+			form#add_form.hidden(action='/putZone', method='post')
+				div.form-group
+					label(for='zoneId') ID
+					//- input#zoneId.form-control(type='text',name='zoneId')
+					select#zoneId.form-control(name='zoneId')
+						each pin in pinMap
+							option(value='#{pin.pin}') #{pin.pin}
+					label(for='zoneLabel') Label
+					input#zoneLabel.form-control(type='text',name='zoneLabel')
+					button.btn.btn-default(type='submit') Submit
+		div.panel-footer
+			p #{zones}
+block scripts	
+	script(type='text/javascript').
+		$(document).ready(function(){
+			$('#edit').click(function(){
+				$('.delete_button').toggleClass('hidden');
+			});
+			$('.delete_button').click(function(){
+				var zone_id = $(this).attr('zone_id');
+				var input = $("<input>").attr("name", "zoneId").val(zone_id);
+				$(input).addClass('hidden');
+				$(this).parents('div.panel-primary').after('<form id="delete_form"></form>');
+				$('#delete_form').append(input)
+					.attr('action','/deleteZone')
+					.attr('method','post')
+					.submit();
+			});
+			$('.play_button').click(function(){
+				var zone_id = $(this).attr('zone_id');
+				var enabled = 1;
+				var input = $("<input>").attr("name", "zoneId").val(zone_id);
+				var input2 = $("<input>").attr("name", "enabled").val(enabled);
+				$(input).addClass('hidden');
+				$(input2).addClass('hidden');
+				$(this).parents('div.panel-primary').after('<form id="play_form"></form>');
+				$('#play_form').append(input)
+					.append(input2)
+					.attr('action','/setZoneEnabled')
+					.attr('method','post')
+					.submit();
+			});
+			$('.pause_button').click(function(){
+				var zone_id = $(this).attr('zone_id');
+				var enabled = 0;
+				var input = $("<input>").attr("name", "zoneId").val(zone_id);
+				var input2 = $("<input>").attr("name", "enabled").val(enabled);
+				$(input).addClass('hidden');
+				$(input2).addClass('hidden');
+				$(this).parents('div.panel-primary').after('<form id="pause_form"></form>');
+				$('#pause_form').append(input)
+					.append(input2)
+					.attr('action','/setZoneEnabled')
+					.attr('method','post')
+					.submit();
+			});
+			$('#add').click(function(){
+				$('#add_form').toggleClass('hidden');
+				$('#zone_table').toggleClass('hidden');
+			});
+		});

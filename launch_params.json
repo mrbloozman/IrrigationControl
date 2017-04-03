@@ -1,0 +1,23 @@
+{
+    "db": "irrigation.db",
+    "pinMap": [
+        {
+            "id": "1",
+            "pin": "XIO-P0"
+        },
+        {
+            "id": "2",
+            "pin": "XIO-P2"
+        },
+        {
+            "id": "3",
+            "pin": "XIO-P4"
+        },
+        {
+            "id": "4",
+            "pin": "XIO-P6"
+        }
+    ],
+    "temp": "http://192.168.1.120/temp",
+    "humidity": "http://192.168.1.120/humidity"
+}
