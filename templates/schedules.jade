@@ -27,17 +27,47 @@ block content
 					th Duration (Minutes)
 					th One Shot
 				each sch in schedules
-					tr
+					tr(sch_id='4')
 						td
-							button.btn.btn-default.hidden.delete_button(sch_id='#{sch.id}')
-								span.glyphicon.glyphicon-remove-sign
+							//- button.btn.btn-default.hidden.delete_button(sch_id='#{sch.id}')
+							div.btn-group.sch_controls.hidden
+								button.btn.btn-default.delete_button(sch_id='4')
+									span.glyphicon.glyphicon-remove-sign
+								button.btn.btn-default.edit_button(sch_id='4')
+									span.glyphicon.glyphicon-pencil
 						td #{sch.id}
-						td #{sch.zone_label}
-						td #{sch.day_label}
-						td #{sch.start_time}
-						td #{sch.duration_minutes}
-						td #{sch.one_shot}
+						td.zone_label #{sch.zone_label}
+						td.day_label #{sch.day_label}
+						td.start_time #{sch.start_time}
+						td.duration_minutes #{sch.duration_minutes}
+						td.one_shot #{sch.one_shot}
 			form#add_form.hidden(action='putSchedule', method='post')
+				div.form-group
+					h4 Zone
+					select.form-control(name='zoneId')
+						each zone in zones
+							option(value='#{zone.id}') #{zone.zone_label}
+					h4 Day
+					select.form-control(name='day')
+						option(value='0') Monday
+						option(value='1') Tuesday
+						option(value='2') Wednesday
+						option(value='3') Thursday
+						option(value='4') Friday
+						option(value='5') Saturday
+						option(value='6') Sunday
+					div.form-control
+						label(for='duration_minutes') Duration in Minutes
+						input#duration_minutes(type='number',name='duration_minutes')
+					div.form-control
+						label(for='start_time') Start Time
+						input#start_time(type='time',name='start_time')
+					h4 One Shot
+					select.form-control(name='one_shot')
+						option(value='1') One Shot
+						option(value='0') Recurring
+					button.btn.btn-default(type='submit') Submit
+			form#edit_form.hidden(action='editSchedule', method='post')
 				div.form-group
 					h4 Zone
 					select.form-control(name='zoneId')
@@ -68,8 +98,10 @@ block content
 block scripts	
 	script(type='text/javascript').
 		$(document).ready(function(){
+			//- var schedules = '#{schedules}';
+			//- console.log(schedules);
 			$('#edit').click(function(){
-				$('.delete_button').toggleClass('hidden');
+				$('.sch_controls').toggleClass('hidden');
 			});
 			$('.delete_button').click(function(){
 				var sch_id = $(this).attr('sch_id');
@@ -80,6 +112,18 @@ block scripts
 					.attr('action','/deleteSchedule')
 					.attr('method','post')
 					.submit();
+			});
+			$('.edit_button').click(function(){
+				var sch_id = $(this).attr('sch_id');
+				var zone_label = '';
+				var day_label = '';
+				var start_time = '';
+				var duration_minutes = $('tr[sch_id='+sch_id+'] td.duration_minutes').text();
+				var one_shot = '';
+
+				$('#edit_form').toggleClass('hidden');
+				$('#sch_table').toggleClass('hidden');
+				$('form#edit_form input#duration_minutes').val(duration_minutes);
 			});
 			$('#add').click(function(){
 				$('#add_form').toggleClass('hidden');
