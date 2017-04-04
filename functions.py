@@ -49,6 +49,18 @@ def putSchedule(connection,zone,day,duration_minutes,start_time,one_shot):
 	except Exception as e:
 		putEvent(connection,2,'putSchedule('+str(zone)+','+str(day)+','+str(duration_minutes)+','+start_time+','+str(one_shot)+'): ' + str(e))
 
+def editSchedule(connection,zone,day,duration_minutes,start_time,one_shot):
+	try:
+		cursor = connection.cursor()
+		start_time = datetime.datetime.strptime(start_time,'%H:%M') 
+		start_time = start_time.strftime('%H:%M')	# start_time is a datetime.time() object
+		cursor.execute('UPDATE tSchedule SET day=?,duration_minutes=?,start_time=?,one_shot=? WHERE zone=?',(day,duration_minutes,start_time,one_shot,zone))
+		putEvent(connection,0,'editSchedule('+str(zone)+','+str(day)+','+str(duration_minutes)+','+start_time+','+str(one_shot)+')')
+		connection.commit()
+	except Exception as e:
+		putEvent(connection,2,'editSchedule('+str(zone)+','+str(day)+','+str(duration_minutes)+','+start_time+','+str(one_shot)+'): ' + str(e))
+
+
 def deleteSchedule(connection,id):
 	try:
 		cursor = connection.cursor()

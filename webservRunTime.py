@@ -94,6 +94,18 @@ def putSchedule():
 	except Exception as e:
 		return schedules(str(e))
 
+@app.route('/editSchedule', methods=['POST'])
+def editSchedule():
+	try:
+		if request.method == 'POST':
+			conn = sqlite3.connect(launch_params['db'])
+			print(request.form)
+			functions.editSchedule(conn,request.form['zoneId'],int(request.form['day']),int(request.form['duration_minutes']),request.form['start_time'],int(request.form['one_shot']))
+			event = functions.getLastEvent(conn)
+		return schedules(event)
+	except Exception as e:
+		return schedules(str(e))
+
 @app.route('/deleteSchedule', methods=['POST'])
 def deleteSchedule():
 	try:
@@ -118,7 +130,9 @@ def zones(event=None):
 def schedules(event=None):
 	conn = sqlite3.connect(launch_params['db'])
 	zones = functions.getZones(conn)
+	print str(zones)
 	schedules = functions.getSchedules(conn)
+	print str(schedules)
 	return render_template('schedules.jade',schedules=schedules,zones=zones,event=event)
 
 

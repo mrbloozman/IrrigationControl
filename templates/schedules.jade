@@ -27,13 +27,12 @@ block content
 					th Duration (Minutes)
 					th One Shot
 				each sch in schedules
-					tr(sch_id='4')
+					tr(sch_id='#{sch.id}')
 						td
-							//- button.btn.btn-default.hidden.delete_button(sch_id='#{sch.id}')
 							div.btn-group.sch_controls.hidden
-								button.btn.btn-default.delete_button(sch_id='4')
+								button.btn.btn-default.delete_button(sch_id='#{sch.id}')
 									span.glyphicon.glyphicon-remove-sign
-								button.btn.btn-default.edit_button(sch_id='4')
+								button.btn.btn-default.edit_button(sch_id='#{sch.id}')
 									span.glyphicon.glyphicon-pencil
 						td #{sch.id}
 						td.zone_label #{sch.zone_label}
@@ -98,8 +97,6 @@ block content
 block scripts	
 	script(type='text/javascript').
 		$(document).ready(function(){
-			//- var schedules = '#{schedules}';
-			//- console.log(schedules);
 			$('#edit').click(function(){
 				$('.sch_controls').toggleClass('hidden');
 			});
@@ -115,15 +112,21 @@ block scripts
 			});
 			$('.edit_button').click(function(){
 				var sch_id = $(this).attr('sch_id');
-				var zone_label = '';
-				var day_label = '';
-				var start_time = '';
+				var zone_label = $('tr[sch_id='+sch_id+'] td.zone_label').text();;
+				var day_label = $('tr[sch_id='+sch_id+'] td.day_label').text();;
+				var start_time = $('tr[sch_id='+sch_id+'] td.start_time').text();;
 				var duration_minutes = $('tr[sch_id='+sch_id+'] td.duration_minutes').text();
-				var one_shot = '';
+				var one_shot = $('tr[sch_id='+sch_id+'] td.one_shot').text();;
 
 				$('#edit_form').toggleClass('hidden');
 				$('#sch_table').toggleClass('hidden');
+				$('form#edit_form option:contains(' + zone_label + ')').attr('selected', true);
+				$('form#edit_form option:contains(' + day_label + ')').attr('selected', true);
+				$('form#edit_form input#start_time').val(start_time);
 				$('form#edit_form input#duration_minutes').val(duration_minutes);
+				if(one_shot=='no'){
+					$('form#edit_form option:contains("Recurring")').attr('selected',true);
+				}
 			});
 			$('#add').click(function(){
 				$('#add_form').toggleClass('hidden');
