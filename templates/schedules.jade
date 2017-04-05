@@ -69,13 +69,16 @@ block content
 						option(value='0') Recurring
 				button.btn.btn-default(type='submit') Submit
 			form#edit_form.hidden(action='editSchedule', method='post')
-				h4 Zone
 				div.form-group
+					label(for='sch_id') Schedule ID
+					input#sch_id(type='text',name='sch_id',readonly)
+				div.form-group
+					h4 Zone
 					select.form-control(name='zoneId')
 						each zone in zones
 							option(value='#{zone.id}') #{zone.zone_label}
-				h4 Day
 				div.form-group
+					h4 Day
 					select.form-control(name='day')
 						option(value='0') Monday
 						option(value='1') Tuesday
@@ -96,8 +99,8 @@ block content
 						option(value='1') One Shot
 						option(value='0') Recurring
 				button.btn.btn-default(type='submit') Submit
-		div.panel-footer
-			p #{schedules}
+		//- div.panel-footer
+		//- 	p #{schedules}
 block scripts	
 	script(type='text/javascript').
 		$(document).ready(function(){
@@ -126,6 +129,7 @@ block scripts
 
 				$('#edit_form').toggleClass('hidden');
 				$('#add_form').addClass('hidden');
+				$('form#edit_form input#sch_id').val(sch_id);
 				$('form#edit_form option:contains(' + zone_label + ')').attr('selected', true);
 				$('form#edit_form option:contains(' + day_label + ')').attr('selected', true);
 				$('form#edit_form input#start_time').val(start_time);

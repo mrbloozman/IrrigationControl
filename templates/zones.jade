@@ -44,15 +44,15 @@ block content
 			form#add_form.hidden(action='/putZone', method='post')
 				div.form-group
 					label(for='zoneId') ID
-					//- input#zoneId.form-control(type='text',name='zoneId')
 					select#zoneId.form-control(name='zoneId')
 						each pin in pinMap
 							option(value='#{pin.pin}') #{pin.pin}
+				div.form-group
 					label(for='zoneLabel') Label
 					input#zoneLabel.form-control(type='text',name='zoneLabel')
-					button.btn.btn-default(type='submit') Submit
-		div.panel-footer
-			p #{zones}
+				button.btn.btn-default(type='submit') Submit
+		//- div.panel-footer
+		//- 	p #{zones}
 block scripts	
 	script(type='text/javascript').
 		$(document).ready(function(){
