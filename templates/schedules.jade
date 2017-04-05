@@ -41,12 +41,13 @@ block content
 						td.duration_minutes #{sch.duration_minutes}
 						td.one_shot #{sch.one_shot}
 			form#add_form.hidden(action='putSchedule', method='post')
+				h4 Zone
 				div.form-group
-					h4 Zone
 					select.form-control(name='zoneId')
 						each zone in zones
 							option(value='#{zone.id}') #{zone.zone_label}
-					h4 Day
+				h4 Day
+				div.form-group
 					select.form-control(name='day')
 						option(value='0') Monday
 						option(value='1') Tuesday
@@ -55,24 +56,26 @@ block content
 						option(value='4') Friday
 						option(value='5') Saturday
 						option(value='6') Sunday
-					div.form-control
-						label(for='duration_minutes') Duration in Minutes
-						input#duration_minutes(type='number',name='duration_minutes')
-					div.form-control
-						label(for='start_time') Start Time
-						input#start_time(type='time',name='start_time')
-					h4 One Shot
+				div.form-group
+					label(for='duration_minutes') Duration in Minutes
+					input#duration_minutes(type='number',name='duration_minutes')
+				div.form-group
+					label(for='start_time') Start Time
+					input#start_time(type='time',name='start_time')
+				h4 One Shot
+				div.form-group
 					select.form-control(name='one_shot')
 						option(value='1') One Shot
 						option(value='0') Recurring
-					button.btn.btn-default(type='submit') Submit
+				button.btn.btn-default(type='submit') Submit
 			form#edit_form.hidden(action='editSchedule', method='post')
+				h4 Zone
 				div.form-group
-					h4 Zone
 					select.form-control(name='zoneId')
 						each zone in zones
 							option(value='#{zone.id}') #{zone.zone_label}
-					h4 Day
+				h4 Day
+				div.form-group
 					select.form-control(name='day')
 						option(value='0') Monday
 						option(value='1') Tuesday
@@ -81,17 +84,18 @@ block content
 						option(value='4') Friday
 						option(value='5') Saturday
 						option(value='6') Sunday
-					div.form-control
-						label(for='duration_minutes') Duration in Minutes
-						input#duration_minutes(type='number',name='duration_minutes')
-					div.form-control
-						label(for='start_time') Start Time
-						input#start_time(type='time',name='start_time')
-					h4 One Shot
+				div.form-group
+					label(for='duration_minutes') Duration in Minutes
+					input#duration_minutes(type='number',name='duration_minutes')
+				div.form-group
+					label(for='start_time') Start Time
+					input#start_time(type='time',name='start_time')
+				h4 One Shot
+				div.form-group
 					select.form-control(name='one_shot')
 						option(value='1') One Shot
 						option(value='0') Recurring
-					button.btn.btn-default(type='submit') Submit
+				button.btn.btn-default(type='submit') Submit
 		div.panel-footer
 			p #{schedules}
 block scripts	
@@ -99,6 +103,8 @@ block scripts
 		$(document).ready(function(){
 			$('#edit').click(function(){
 				$('.sch_controls').toggleClass('hidden');
+				$('#edit_form').addClass('hidden');
+				$('#add_form').addClass('hidden');
 			});
 			$('.delete_button').click(function(){
 				var sch_id = $(this).attr('sch_id');
@@ -119,7 +125,7 @@ block scripts
 				var one_shot = $('tr[sch_id='+sch_id+'] td.one_shot').text();;
 
 				$('#edit_form').toggleClass('hidden');
-				$('#sch_table').toggleClass('hidden');
+				$('#add_form').addClass('hidden');
 				$('form#edit_form option:contains(' + zone_label + ')').attr('selected', true);
 				$('form#edit_form option:contains(' + day_label + ')').attr('selected', true);
 				$('form#edit_form input#start_time').val(start_time);
@@ -130,6 +136,6 @@ block scripts
 			});
 			$('#add').click(function(){
 				$('#add_form').toggleClass('hidden');
-				$('#sch_table').toggleClass('hidden');
+				$('#edit_form').addClass('hidden');
 			});
 		});
