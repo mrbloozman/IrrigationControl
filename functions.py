@@ -134,8 +134,6 @@ def getZones(connection):
 				#include today
 				start_date = dateOfNextWeekday(sch['day'],True)
 			start_datetime = datetime.datetime.combine(start_date,start_time)
-			print str(z['nextRunTime'])
-			print str(start_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f'))
 			if z['nextRunTime'] == None:
 				z['nextRunTime'] = start_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f')
 			elif (start_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f') < z['nextRunTime']):
