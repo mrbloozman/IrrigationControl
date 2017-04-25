@@ -1,6 +1,6 @@
 import sqlite3
 import datetime
-import CHIP_IO.GPIO as gpio
+# import CHIP_IO.GPIO as gpio
 import sys
 import json
 
@@ -8,11 +8,14 @@ with open(sys.argv[1],'r+') as f:
 	launch_params = json.loads(f.read())
 	f.close()
 
-def dateOfNextWeekday(weekday):
+def dateOfNextWeekday(weekday,includeToday=True):	# includeToday, True if today can be "Next weekday"
 	daysFromWeekday = weekday - datetime.datetime.now().weekday()
 	if daysFromWeekday < 0:
 		daysFromWeekday = daysFromWeekday + 7
-	daysFromWeekday = datetime.timedelta(days=daysFromWeekday)
+	if includeToday:
+		daysFromWeekday = datetime.timedelta(days=daysFromWeekday)
+	else:
+		daysFromWeekday = datetime.timedelta(days=daysFromWeekday+7)
 	return datetime.datetime.now() + daysFromWeekday
 
 def putEvent(connection,severity,message):
@@ -123,9 +126,16 @@ def getZones(connection):
 		z['nextRunTime'] = None
 		schedules = getSchedulesByZone(connection,z['id'])
 		for sch in schedules:
-			start_date = dateOfNextWeekday(sch['day'])
 			start_time = datetime.datetime.strptime(sch['start_time'],'%H:%M').time()
+			if start_time < datetime.datetime.now().time():
+				# don't inlude today
+				start_date = dateOfNextWeekday(sch['day'],False)
+			else:
+				#include today
+				start_date = dateOfNextWeekday(sch['day'],True)
 			start_datetime = datetime.datetime.combine(start_date,start_time)
+			print str(z['nextRunTime'])
+			print str(start_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f'))
 			if z['nextRunTime'] == None:
 				z['nextRunTime'] = start_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f')
 			elif (start_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f') < z['nextRunTime']):
@@ -138,12 +148,12 @@ def zoneOn(connection,zone):
 	setZoneStatus(connection,zone,1)
 	print('zoneOn(' + str(zone) + ')')
 	pin=zone
-	gpio.output(pin,gpio.LOW)
+	# gpio.output(pin,gpio.LOW)
 	putEvent(connection,0,'zoneOn(' + str(zone) + ')')
 
 def zoneOff(connection,zone):
 	setZoneStatus(connection,zone,0)
 	print('zoneOff(' + str(zone) + ')')
 	pin=zone
-	gpio.output(pin,gpio.HIGH)
+	# gpio.output(pin,gpio.HIGH)
 	putEvent(connection,0,'zoneOff(' + str(zone) + ')')
