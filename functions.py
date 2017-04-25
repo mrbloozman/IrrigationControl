@@ -12,7 +12,7 @@ def dateOfNextWeekday(weekday,includeToday=True):	# includeToday, True if today 
 	daysFromWeekday = weekday - datetime.datetime.now().weekday()
 	if daysFromWeekday < 0:
 		daysFromWeekday = daysFromWeekday + 7
-	if includeToday:
+	if includeToday or daysFromWeekday>0:
 		daysFromWeekday = datetime.timedelta(days=daysFromWeekday)
 	else:
 		daysFromWeekday = datetime.timedelta(days=daysFromWeekday+7)
