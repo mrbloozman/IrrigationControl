@@ -1,6 +1,6 @@
 import sqlite3
 import datetime
-import CHIP_IO.GPIO as gpio
+# import CHIP_IO.GPIO as gpio
 import sys
 import json
 
@@ -146,12 +146,12 @@ def zoneOn(connection,zone):
 	setZoneStatus(connection,zone,1)
 	print('zoneOn(' + str(zone) + ')')
 	pin=zone
-	gpio.output(pin,gpio.LOW)
+	# gpio.output(pin,gpio.LOW)
 	putEvent(connection,0,'zoneOn(' + str(zone) + ')')
 
 def zoneOff(connection,zone):
 	setZoneStatus(connection,zone,0)
 	print('zoneOff(' + str(zone) + ')')
 	pin=zone
-	gpio.output(pin,gpio.HIGH)
+	# gpio.output(pin,gpio.HIGH)
 	putEvent(connection,0,'zoneOff(' + str(zone) + ')')

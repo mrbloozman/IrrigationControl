@@ -24,9 +24,34 @@ with open(sys.argv[1],'r+') as f:
 app = Flask(__name__)
 app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 # app.config['BASIC_AUTH_USERNAME'] = 'mark'
-# app.config['BASIC_AUTH_PASSWORD'] = 'sojan123'
+# app.config['BASIC_AUTH_PASSWORD'] = 'password'
 
 # basic_auth = BasicAuth(app)
+
+class results:
+	def __init__(self):
+		self.page=0
+		self.size=5
+		self.results=[]
+
+	def load(self,data):
+		self.results=data
+
+	def current(self):
+		start = self.page*self.size
+		end = start+self.size
+		return self.results[start:end]
+
+	def next(self):
+		self.page = self.page+1
+		return self.current()
+
+	def previous(self):
+		self.page = self.page-1
+		return self.current()
+
+eventsResults = results()
+
 
 @app.route("/")
 def home():
@@ -139,7 +164,16 @@ def schedules(event=None):
 def events():
 	conn = sqlite3.connect(launch_params['db'])
 	events = functions.getEvents(conn)
-	return render_template('events.jade',events=events)
+	eventsResults.load(events)
+
+	if request.args.get('page'):
+		if request.args.get('page')=='next':
+			pageResults=eventsResults.next()
+		elif request.args.get('page')=='previous':
+			pageResults=eventsResults.previous()
+	else:
+		pageResults=eventsResults.current()
+	return render_template('events.jade',events=pageResults)
 
 
 if __name__ == '__main__':
