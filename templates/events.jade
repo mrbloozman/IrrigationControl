@@ -5,10 +5,6 @@ block content
 		div.panel-heading
 			h1.panel-title Log
 		div.panel-body
-			nav
-				ul.pager
-					li: a(href='/events?page=previous') Previous
-					li: a(href='/events?page=next') Next
 			table.table
 				tr
 					th ID
@@ -29,3 +25,15 @@ block content
 							td #{row.timeStamp}
 							td #{row.severity}
 							td #{row.message}
+			div.text-center
+				div.btn-group
+					a.btn.btn-info(href='/events?page=previous') Previous
+					div.btn-group
+						button.btn.btn-info.dropdown-toggle(type='button',data-toggle='dropdown') #&nbsp;
+							span.caret
+						ul.dropdown-menu
+							li: a(href='/events?size=10') 10
+							li: a(href='/events?size=25') 25
+							li: a(href='/events?size=50') 50
+							li: a(href='/events?size=100') 100
+					a.btn.btn-info(href='/events?page=next') Next

@@ -31,11 +31,16 @@ app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 class results:
 	def __init__(self):
 		self.page=0
-		self.size=5
+		self.size=10
 		self.results=[]
 
 	def load(self,data):
 		self.results=data
+
+	def resize(self,newsize):
+		cursor = self.page*self.size
+		self.size = newsize
+		self.page = int(cursor/self.size)
 
 	def current(self):
 		start = self.page*self.size
@@ -43,11 +48,13 @@ class results:
 		return self.results[start:end]
 
 	def next(self):
-		self.page = self.page+1
+		if ((self.page+1)*self.size) < len(self.results):
+			self.page = self.page+1
 		return self.current()
 
 	def previous(self):
-		self.page = self.page-1
+		if (self.page-1) >= 0:
+			self.page = self.page-1
 		return self.current()
 
 eventsResults = results()
@@ -165,6 +172,9 @@ def events():
 	conn = sqlite3.connect(launch_params['db'])
 	events = functions.getEvents(conn)
 	eventsResults.load(events)
+
+	if request.args.get('size'):
+		eventsResults.resize(int(request.args.get('size')))
 
 	if request.args.get('page'):
 		if request.args.get('page')=='next':
