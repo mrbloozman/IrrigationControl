@@ -5,26 +5,27 @@ block content
 		div.panel-heading
 			h1.panel-title Log
 		div.panel-body
-			table.table
-				tr
-					th ID
-					th Time Stamp
-					th Severity
-					th Message
-					//- ['id','timeStamp','severity','message']
-				each row in events
-					if row.severity == 'INFO':
-						tr.info
-							td #{row.id}
-							td #{row.timeStamp}
-							td #{row.severity}
-							td #{row.message}
-					if row.severity == 'ERROR':
-						tr.danger
-							td #{row.id}
-							td #{row.timeStamp}
-							td #{row.severity}
-							td #{row.message}
+			div.table-responsive
+				table.table
+					tr
+						th ID
+						th Time Stamp
+						th Severity
+						th Message
+						//- ['id','timeStamp','severity','message']
+					each row in events
+						if row.severity == 'INFO':
+							tr.info
+								td #{row.id}
+								td #{row.timeStamp}
+								td #{row.severity}
+								td #{row.message}
+						if row.severity == 'ERROR':
+							tr.danger
+								td #{row.id}
+								td #{row.timeStamp}
+								td #{row.severity}
+								td #{row.message}
 			div.text-center
 				div.btn-group
 					a.btn.btn-info(href='/events?page=previous') Previous

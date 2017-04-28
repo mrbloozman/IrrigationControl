@@ -17,30 +17,6 @@ block content
 					span.glyphicon.glyphicon-plus-sign
 				button.btn.btn-default#edit(type='button')
 					span.glyphicon.glyphicon-pencil
-			table.table
-				tr
-					th
-					th ID
-					th Label
-					th Status
-					th Next Run Time
-					th Disable/Enable
-				each zone in zones
-					tr
-						td
-							button.btn.btn-default.hidden.delete_button(zone_id='#{zone.id}')
-								span.glyphicon.glyphicon-remove-sign
-						td #{zone.id}
-						td #{zone.zone_label}
-						td #{zone.status_label}
-						td #{zone.nextRunTimeFormatted}
-						td
-							if zone.enabled==0
-								button.btn.btn-default.play_button(zone_id='#{zone.id}')
-									span.glyphicon.glyphicon-play
-							else
-								button.btn.btn-default.pause_button(zone_id='#{zone.id}')
-									span.glyphicon.glyphicon-pause
 			form#add_form.hidden(action='/putZone', method='post')
 				div.form-group
 					label(for='zoneId') ID
@@ -51,6 +27,31 @@ block content
 					label(for='zoneLabel') Label
 					input#zoneLabel.form-control(type='text',name='zoneLabel')
 				button.btn.btn-default(type='submit') Submit
+			div.table-responsive
+				table.table
+					tr
+						th
+						th ID
+						th Label
+						th Status
+						th Next Run Time
+						th Disable/Enable
+					each zone in zones
+						tr
+							td
+								button.btn.btn-default.hidden.delete_button(zone_id='#{zone.id}')
+									span.glyphicon.glyphicon-remove-sign
+							td #{zone.id}
+							td #{zone.zone_label}
+							td #{zone.status_label}
+							td #{zone.nextRunTimeFormatted}
+							td
+								if zone.enabled==0
+									button.btn.btn-default.play_button(zone_id='#{zone.id}')
+										span.glyphicon.glyphicon-play
+								else
+									button.btn.btn-default.pause_button(zone_id='#{zone.id}')
+										span.glyphicon.glyphicon-pause
 		//- div.panel-footer
 		//- 	p #{zones}
 block scripts	

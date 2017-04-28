@@ -17,29 +17,6 @@ block content
 					span.glyphicon.glyphicon-plus-sign
 				button.btn.btn-default#edit(type='button')
 					span.glyphicon.glyphicon-pencil
-			table#sch_table.table
-				tr
-					th
-					th ID
-					th Zone
-					th Day
-					th Start Time
-					th Duration (Minutes)
-					th One Shot
-				each sch in schedules
-					tr(sch_id='#{sch.id}')
-						td
-							div.btn-group.sch_controls.hidden
-								button.btn.btn-default.delete_button(sch_id='#{sch.id}')
-									span.glyphicon.glyphicon-remove-sign
-								button.btn.btn-default.edit_button(sch_id='#{sch.id}')
-									span.glyphicon.glyphicon-pencil
-						td #{sch.id}
-						td.zone_label #{sch.zone_label}
-						td.day_label #{sch.day_label}
-						td.start_time #{sch.start_time}
-						td.duration_minutes #{sch.duration_minutes}
-						td.one_shot #{sch.one_shot}
 			form#add_form.hidden(action='putSchedule', method='post')
 				h4 Zone
 				div.form-group
@@ -99,6 +76,30 @@ block content
 						option(value='1') One Shot
 						option(value='0') Recurring
 				button.btn.btn-default(type='submit') Submit
+			div.table-responsive
+				table#sch_table.table
+					tr
+						th
+						th ID
+						th Zone
+						th Day
+						th Start Time
+						th Duration (Minutes)
+						th One Shot
+					each sch in schedules
+						tr(sch_id='#{sch.id}')
+							td
+								div.btn-group.sch_controls.hidden
+									button.btn.btn-default.delete_button(sch_id='#{sch.id}')
+										span.glyphicon.glyphicon-remove-sign
+									button.btn.btn-default.edit_button(sch_id='#{sch.id}')
+										span.glyphicon.glyphicon-pencil
+							td #{sch.id}
+							td.zone_label #{sch.zone_label}
+							td.day_label #{sch.day_label}
+							td.start_time #{sch.start_time}
+							td.duration_minutes #{sch.duration_minutes}
+							td.one_shot #{sch.one_shot}
 		//- div.panel-footer
 		//- 	p #{schedules}
 block scripts	
