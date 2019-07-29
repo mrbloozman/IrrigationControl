@@ -3,7 +3,8 @@ import sys
 import json
 import datetime
 import time
-import CHIP_IO.GPIO as gpio
+# import CHIP_IO.GPIO as gpio
+import wiringpi
 import functions
 
 with open(sys.argv[1],'r+') as f:
@@ -11,9 +12,12 @@ with open(sys.argv[1],'r+') as f:
 	f.close()
 
 # setup gpio
+wiringpi.wiringPiSetup()
 for p in launch_params['pinMap']:
-	gpio.setup(p['pin'],gpio.OUT)
-	gpio.output(p['pin'],gpio.HIGH)
+	# gpio.setup(p['pin'],gpio.OUT)
+	wiringpi.pinMode(p['pin'], wiringpi.OUTPUT)
+	# gpio.output(p['pin'],gpio.HIGH)
+	wiringpi.digitalWrite(p['pin'], wiringpi.HIGH)
 
 # connect to db
 conn = sqlite3.connect(launch_params['db'])
