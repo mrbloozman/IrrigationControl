@@ -92,17 +92,17 @@ def getSchedules(connection):
 def putZone(connection, zone, label):
 	try:
 		cursor = connection.cursor()
-		cursor.execute('INSERT INTO tZone VALUES (?,?,?,?)',(zone,label,0,1))
+		cursor.execute('INSERT INTO tZone VALUES (?,?,?,?)',(str(zone),str(label),0,1))
 		print('putZone('+zone+','+label+')')
-		putEvent(connection,0,'putZone('+zone+','+label+')')
+		putEvent(connection,0,'putZone('+str(zone)+','+str(label)+')')
 		connection.commit()
 	except Exception as e:
-		putEvent(connection,2,'putZone('+zone+','+label+'): ' + str(e))
+		putEvent(connection,2,'putZone('+str(zone)+','+str(label)+'): ' + str(e))
 
 def deleteZone(connection, zone):
 	try:
 		cursor = connection.cursor()
-		cursor.execute('DELETE FROM tZone WHERE pk_zone=?',(zone,))
+		cursor.execute('DELETE FROM tZone WHERE pk_zone=?',(str(zone),))
 		putEvent(connection,0,'deleteZone('+str(zone)+')')
 		connection.commit()
 	except Exception as e:
@@ -110,12 +110,12 @@ def deleteZone(connection, zone):
 
 def setZoneStatus(connection,zone,status):
 	cursor = connection.cursor()
-	cursor.execute('UPDATE tZone SET status = ? WHERE pk_zone = ?',(status,zone))
+	cursor.execute('UPDATE tZone SET status = ? WHERE pk_zone = ?',(status,str(zone)))
 	connection.commit()
 
 def setZoneEnabled(connection,zone,enabled):
 	cursor = connection.cursor()
-	cursor.execute('UPDATE tZone SET enabled = ? WHERE pk_zone = ?',(enabled,zone))
+	cursor.execute('UPDATE tZone SET enabled = ? WHERE pk_zone = ?',(enabled,str(zone)))
 	connection.commit()
 
 def getZones(connection):
