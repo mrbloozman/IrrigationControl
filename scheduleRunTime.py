@@ -15,9 +15,9 @@ with open(sys.argv[1],'r+') as f:
 wiringpi.wiringPiSetup()
 for p in launch_params['pinMap']:
 	# gpio.setup(p['pin'],gpio.OUT)
-	wiringpi.pinMode(p['pin'], wiringpi.OUTPUT)
+	wiringpi.pinMode(int(p['pin']), wiringpi.OUTPUT)
 	# gpio.output(p['pin'],gpio.HIGH)
-	wiringpi.digitalWrite(p['pin'], wiringpi.HIGH)
+	wiringpi.digitalWrite(int(p['pin']), wiringpi.HIGH)
 
 # connect to db
 conn = sqlite3.connect(launch_params['db'])

@@ -146,7 +146,7 @@ def getZones(connection):
 def zoneOn(connection,zone):
 	setZoneStatus(connection,zone,1)
 	print('zoneOn(' + str(zone) + ')')
-	pin=zone
+	pin=int(zone)
 	# gpio.output(pin,gpio.LOW)
 	wiringpi.digitalWrite(pin, wiringpi.LOW)
 	putEvent(connection,0,'zoneOn(' + str(zone) + ')')
@@ -154,7 +154,7 @@ def zoneOn(connection,zone):
 def zoneOff(connection,zone):
 	setZoneStatus(connection,zone,0)
 	print('zoneOff(' + str(zone) + ')')
-	pin=zone
+	pin=int(zone)
 	# gpio.output(pin,gpio.HIGH)
 	wiringpi.digitalWrite(pin, wiringpi.HIGH)
 	putEvent(connection,0,'zoneOff(' + str(zone) + ')')
