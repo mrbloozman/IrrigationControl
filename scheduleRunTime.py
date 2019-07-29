@@ -33,7 +33,9 @@ while True:
 
 		# run schedules
 		schedules = functions.getSchedules(conn)
+		print schedules
 		zones = functions.getZones(conn)
+		print zones
 		for zone in zones:
 			zone['status']=0
 
