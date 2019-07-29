@@ -29,7 +29,7 @@ INSERT INTO "tStatus" VALUES(0,'off');
 INSERT INTO "tStatus" VALUES(1,'on');
 CREATE TABLE tSchedule (
 pk_id integer primary key autoincrement,
-zone integer,
+zone text,
 day integer,
 duration_minutes integer,
 start_time text,
